@@ -10,4 +10,9 @@ public class LikeService {
 
     @Autowired
     private LikeRepo likeRepo;
+
+    public String deleteLike(String likeId){
+        likeRepo.deleteById(likeId);
+        return "Deleted likeId "+likeId+" successfully";
+    }
 }
