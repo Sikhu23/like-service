@@ -2,6 +2,7 @@ package com.likeservice.Service;
 
 
 import com.likeservice.Feign.FeignUser;
+import com.likeservice.Model.FeignRequest;
 import com.likeservice.Model.Like;
 import com.likeservice.Repository.LikeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class LikeService {
     private FeignUser feignUser;
 
 
-    public Like likeDetailsOnID(String likeId){
-        System.out.println(feignUser.);
-        return likeRepo.findById(likeId).get();
+    public FeignRequest likeDetailsOnID(String likeId){
+        FeignRequest feignRequest=new FeignRequest();
+       feignRequest.setUser(feignUser.findByID(likeRepo.findById(likeId).get().getLikedBy()));
+       feignRequest.setLike(likeRepo.findById(likeId).get());
+        return  feignRequest;
     }
 
 

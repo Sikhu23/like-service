@@ -22,12 +22,12 @@ public class Like {
     @Id
     private String likeID;
 
-    @NotEmpty(message = "user ID is required")
-    private String userID;
+
+
 
 
     private String postorcommentID;
-
+    @NotEmpty(message = "user ID is required")
     private String likedBy;
 
 

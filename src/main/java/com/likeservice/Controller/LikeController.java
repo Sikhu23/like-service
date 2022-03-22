@@ -1,6 +1,7 @@
 package com.likeservice.Controller;
 
 
+import com.likeservice.Model.FeignRequest;
 import com.likeservice.Model.Like;
 import com.likeservice.Service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class LikeController {
 
 
     @GetMapping("/postsOrComments/{postOrCommentId}/likes/{likeId}")
-    public ResponseEntity<Like> likeDetailsOnID(@PathVariable("likeId") String likeId,@PathVariable("postOrCommentId") String postOrCommentId) {
+    public ResponseEntity<FeignRequest> likeDetailsOnID(@PathVariable("likeId") String likeId, @PathVariable("postOrCommentId") String postOrCommentId) {
         return new ResponseEntity<>(likeService.likeDetailsOnID(likeId), HttpStatus.ACCEPTED);
     }
 
