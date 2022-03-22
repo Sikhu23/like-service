@@ -4,6 +4,10 @@ package com.likeservice.Service;
 import com.likeservice.Model.Like;
 import com.likeservice.Repository.LikeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -32,23 +36,29 @@ public class LikeService {
 
 
     public int likeCount(String postOrCommentId){
-        List<Like> allData=likeRepo.findAll();
-        int count=0;
-        for(Like like:allData){
-            if(like.getPostOrCommentId().equals(postOrCommentId)){
-                count++;
-            }
-        }
-        return count;
+
+        return likeRepo.findBypostorcommentID(postOrCommentId).size();
+
     }
 
 
     public Like createLike(Like like, String postOrCommentId){
-        like.setPostOrCommentId(postOrCommentId);
+        like.setPostorcommentID(postOrCommentId);
         like.setCreatedAt(LocalDateTime.now());
         return this.likeRepo.save(like);
 
     }
+
+    public List<Like> getLikesPage(String postOrCommentId,int page, int pageSize){
+        Pageable firstPage = PageRequest.of(page, pageSize);
+
+        List<Like> allLikes=likeRepo.findBypostorcommentID(postOrCommentId,firstPage);
+        return  allLikes;
+
+    }
+
+
+
 
 
 

@@ -26,7 +26,7 @@ public class Like {
     private String userID;
 
 
-    private String postOrCommentId;
+    private String postorcommentID;
 
     private String likedBy;
 
