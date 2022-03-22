@@ -38,16 +38,19 @@ public class LikeController {
 
 
     @GetMapping("/postsOrComments/{postOrCommentId}/likes/{likeId}")
-    public ResponseEntity<Like> likeDetailsOnID(@PathVariable("likeId") String likeId,@PathVariable("postOrCommentId") String postOrCommentId){
+    public ResponseEntity<Like> likeDetailsOnID(@PathVariable("likeId") String likeId,@PathVariable("postOrCommentId") String postOrCommentId) {
         return new ResponseEntity<>(likeService.likeDetailsOnID(likeId), HttpStatus.ACCEPTED);
+    }
 
     @DeleteMapping("/postsOrComments/{postOrCommentId}/likes/{likeId}")
-    public ResponseEntity<String> deleteLike(@PathVariable("likeId") String likeId,@PathVariable("postOrCommentId") String postOrCommentId ){
+    public ResponseEntity<String> deleteLike(@PathVariable("likeId") String likeId,@PathVariable("postOrCommentId") String postOrCommentId ) {
         return new ResponseEntity<>(likeService.deleteLike(likeId), HttpStatus.ACCEPTED);
+    }
 
     @GetMapping("/postsOrComments/{postOrCommentId}/likes/count")
-    public ResponseEntity<Integer> likeCount(@PathVariable("postOrCommentId") String postOrCommentId){
+    public ResponseEntity<Integer> likeCount(@PathVariable("postOrCommentId") String postOrCommentId) {
         return new ResponseEntity<>(likeService.likeCount(postOrCommentId), HttpStatus.ACCEPTED);
+    }
 
 
     @PostMapping("/postsOrComments/{postOrCommentId}/likes")
