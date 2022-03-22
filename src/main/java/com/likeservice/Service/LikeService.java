@@ -1,6 +1,7 @@
 package com.likeservice.Service;
 
 
+import com.likeservice.Feign.FeignUser;
 import com.likeservice.Model.Like;
 import com.likeservice.Repository.LikeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,12 @@ public class LikeService {
     @Autowired
     private LikeRepo likeRepo;
 
+    @Autowired
+    private FeignUser feignUser;
+
 
     public Like likeDetailsOnID(String likeId){
+        System.out.println(feignUser.);
         return likeRepo.findById(likeId).get();
     }
 
@@ -36,6 +41,7 @@ public class LikeService {
 
 
     public int likeCount(String postOrCommentId){
+
 
         return likeRepo.findBypostorcommentID(postOrCommentId).size();
 
