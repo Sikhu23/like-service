@@ -19,6 +19,12 @@ public class LikeService {
     private LikeRepo likeRepo;
 
 
+    public String deleteLike(String likeId){
+        likeRepo.deleteById(likeId);
+        return "Deleted likeId "+likeId+" successfully";
+    }
+
+
 
     public int likeCount(String postOrCommentId){
         List<Like> allData=likeRepo.findAll();
@@ -38,5 +44,6 @@ public class LikeService {
         return this.likeRepo.save(like);
 
     }
+
 
 }
