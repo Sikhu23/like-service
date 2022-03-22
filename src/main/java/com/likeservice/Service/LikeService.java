@@ -19,6 +19,11 @@ public class LikeService {
     private LikeRepo likeRepo;
 
 
+    public Like likeDetailsOnID(String likeId){
+        return likeRepo.findById(likeId).get();
+    }
+
+
     public String deleteLike(String likeId){
         likeRepo.deleteById(likeId);
         return "Deleted likeId "+likeId+" successfully";
@@ -44,6 +49,7 @@ public class LikeService {
         return this.likeRepo.save(like);
 
     }
+
 
 
 }
