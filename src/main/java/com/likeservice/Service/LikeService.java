@@ -1,6 +1,7 @@
 package com.likeservice.Service;
 
 
+import com.likeservice.Exception.LikeNotFoundException;
 import com.likeservice.Feign.FeignUser;
 import com.likeservice.Model.FeignRequest;
 import com.likeservice.Model.Like;
@@ -31,18 +32,29 @@ public class LikeService {
 
 
     public LikeDTO likeDetailsOnID(String likeId){
-        Like like = likeRepo.findById(likeId).get();
-        LikeDTO likeDTO=new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
-                feignUser.findByID(like.getLikedBy()).getFirstName(),like.getCreatedAt());
+        if(likeRepo.findById(likeId).isPresent()){
+            Like like = likeRepo.findById(likeId).get();
+            LikeDTO likeDTO=new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
+                    feignUser.findByID(like.getLikedBy()).getFirstName(),like.getCreatedAt());
 
-        return likeDTO;
+            return likeDTO;
+        }
+        else {
+            throw new LikeNotFoundException("Like ID Doesnot Exists");
+        }
 
     }
 
 
     public String deleteLike(String likeId){
-        likeRepo.deleteById(likeId);
-        return "Like has been successfully removed.";
+        if(likeRepo.findById(likeId).isPresent()){
+            likeRepo.deleteById(likeId);
+            return "Like has been successfully removed.";
+        }
+        else
+        {
+            throw new LikeNotFoundException("Like ID Doesnot Exists");
+        }
     }
 
 
@@ -75,6 +87,9 @@ public class LikeService {
         Pageable firstPage = PageRequest.of(page-1, pageSize);
 
         List<Like> allLikes=likeRepo.findBypostorcommentID(postOrCommentId,firstPage);
+        if(allLikes.isEmpty()){
+            throw new LikeNotFoundException("Like ID Doesnot Exists");
+        }
         List<LikeDTO> likeDTOS = new ArrayList<>();
         for(Like like:allLikes){
             LikeDTO likeDTO=new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
