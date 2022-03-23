@@ -35,7 +35,7 @@ public class LikeService {
         if(likeRepo.findById(likeId).isPresent()){
             Like like = likeRepo.findById(likeId).get();
             LikeDTO likeDTO=new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
-                    feignUser.findByID(like.getLikedBy()).getFirstName(),like.getCreatedAt());
+                    feignUser.findByID(like.getLikedBy()),like.getCreatedAt());
 
             return likeDTO;
         }
@@ -72,7 +72,7 @@ public class LikeService {
         like.setCreatedAt(LocalDateTime.now());
          this.likeRepo.save(like);
          LikeDTO likeDTO =new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
-                 feignUser.findByID(like.getLikedBy()).getFirstName(),like.getCreatedAt());
+                 feignUser.findByID(like.getLikedBy()),like.getCreatedAt());
          return likeDTO;
 
     }
@@ -93,7 +93,7 @@ public class LikeService {
         List<LikeDTO> likeDTOS = new ArrayList<>();
         for(Like like:allLikes){
             LikeDTO likeDTO=new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
-                    feignUser.findByID(like.getLikedBy()).getFirstName(),like.getCreatedAt());
+                    feignUser.findByID(like.getLikedBy()),like.getCreatedAt());
 
             likeDTOS.add(likeDTO);
         }

@@ -19,8 +19,8 @@ public class LikeDTO {
     private String likeID;
 
     private String postorcommentID;
-    @NotEmpty(message = "user ID is required")
-    private String likedBy;
+    @NotEmpty(message = "user Object is required")
+    private User likedBy;
 
 
     private LocalDateTime createdAt;

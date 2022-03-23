@@ -39,8 +39,8 @@ public class User {
     @NotEmpty(message = "Gender is required")
     private String gender;
 
-    @NotEmpty(message = "Martial Status is required")
-    private String martialStatus ;
+    @NotEmpty(message = "Address is required")
+    private String address ;
 
     @NotEmpty(message = "Employee Number is required")
     private String employeeNumber;
@@ -51,8 +51,6 @@ public class User {
     @NotEmpty(message = "Email is required")
     private String email;
 
-    @NotEmpty(message = "Password is required")
-    private String password;
 
 
 
