@@ -1,6 +1,7 @@
 package com.likeservice.Service;
 
 
+import com.likeservice.Const.ConstFile;
 import com.likeservice.Exception.LikeNotFoundException;
 import com.likeservice.Feign.FeignUser;
 import com.likeservice.Model.FeignRequest;
@@ -40,7 +41,7 @@ public class LikeService {
             return likeDTO;
         }
         else {
-            throw new LikeNotFoundException("Like ID Doesnot Exists");
+            throw new LikeNotFoundException(ConstFile.errorCode);
         }
 
     }
@@ -49,11 +50,11 @@ public class LikeService {
     public String deleteLike(String likeId){
         if(likeRepo.findById(likeId).isPresent()){
             likeRepo.deleteById(likeId);
-            return "Like has been successfully removed.";
+            return ConstFile.successCode;
         }
         else
         {
-            throw new LikeNotFoundException("Like ID Doesnot Exists");
+            throw new LikeNotFoundException(ConstFile.errorCode);
         }
     }
 
@@ -88,7 +89,7 @@ public class LikeService {
 
         List<Like> allLikes=likeRepo.findBypostorcommentID(postOrCommentId,firstPage);
         if(allLikes.isEmpty()){
-            throw new LikeNotFoundException("Like ID Doesnot Exists");
+            throw new LikeNotFoundException(ConstFile.errorCode);
         }
         List<LikeDTO> likeDTOS = new ArrayList<>();
         for(Like like:allLikes){
