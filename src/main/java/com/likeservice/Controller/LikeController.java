@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 
+@CrossOrigin(value="*")
 @RestController
 @RequestMapping("/postsOrComments/{postOrCommentId}")
 public class LikeController {
