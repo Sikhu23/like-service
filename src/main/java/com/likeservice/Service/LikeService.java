@@ -2,17 +2,19 @@ package com.likeservice.Service;
 
 
 import com.likeservice.Const.ConstFile;
+import com.likeservice.Exception.LikeExistsException;
+import com.likeservice.Exception.PnCIDMismatchException;
 import com.likeservice.Exception.LikeNotFoundException;
+import com.likeservice.Exception.UserNotFoundException;
 import com.likeservice.Feign.FeignUser;
-import com.likeservice.Model.FeignRequest;
 import com.likeservice.Model.Like;
 import com.likeservice.Model.LikeDTO;
+import com.likeservice.Model.User;
 import com.likeservice.Repository.LikeRepo;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -69,12 +71,59 @@ public class LikeService {
 
 
     public LikeDTO createLike(Like like, String postOrCommentId){
-        like.setPostorcommentID(postOrCommentId);
-        like.setCreatedAt(LocalDateTime.now());
-         this.likeRepo.save(like);
-         LikeDTO likeDTO =new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
-                 feignUser.findByID(like.getLikedBy()),like.getCreatedAt());
-         return likeDTO;
+
+
+
+
+        if(postOrCommentId.equals(like.getPostorcommentID()))
+        {
+
+            if(likeRepo.findBypostorcommentID(postOrCommentId).isEmpty()){
+
+                like.setPostorcommentID(postOrCommentId);
+                like.setCreatedAt(LocalDateTime.now());
+
+                try {
+                    User user=feignUser.findByID(like.getLikedBy());
+                    this.likeRepo.save(like);
+                    LikeDTO likeDTO =new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
+                          user  ,like.getCreatedAt());
+
+                    return likeDTO;
+                }
+                catch (FeignException e){
+                    throw new UserNotFoundException("No User found with this likedBy ID");
+                }
+            }
+            else{
+                List<Like> likes=likeRepo.findBypostorcommentID(postOrCommentId);
+                for(Like like1: likes){
+                    if(like1.getLikedBy().equals(like.getLikedBy())){
+                        throw new LikeExistsException("User Already Liked this ");
+                    }
+                }
+
+                like.setPostorcommentID(postOrCommentId);
+                like.setCreatedAt(LocalDateTime.now());
+
+                try {
+                    User user=feignUser.findByID(like.getLikedBy());
+                    this.likeRepo.save(like);
+                    LikeDTO likeDTO =new LikeDTO(like.getLikeID(),like.getPostorcommentID(),
+                            user  ,like.getCreatedAt());
+
+                    return likeDTO;
+                }
+                catch (FeignException e){
+                    throw new UserNotFoundException("No User found with this likedBy ID");
+                }
+
+            }
+
+        }
+        else{
+            throw new PnCIDMismatchException("URL and Body postOrCommentId are not equal ");
+        }
 
     }
 
@@ -89,7 +138,7 @@ public class LikeService {
 
         List<Like> allLikes=likeRepo.findBypostorcommentID(postOrCommentId,firstPage);
         if(allLikes.isEmpty()){
-            throw new LikeNotFoundException(ConstFile.errorCode);
+            throw new PnCIDMismatchException("PostorCommentID doesnot exist");
         }
         List<LikeDTO> likeDTOS = new ArrayList<>();
         for(Like like:allLikes){

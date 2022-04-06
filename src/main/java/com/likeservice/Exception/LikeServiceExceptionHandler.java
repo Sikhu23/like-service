@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 class LikeServiceExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({LikeNotFoundException.class})
+    @ExceptionHandler({LikeNotFoundException.class, PnCIDMismatchException.class,LikeExistsException.class,
+    UserNotFoundException.class})
     ResponseEntity customerNotFoundHandler(Exception exception, ServletWebRequest request){
         ApiError apiError = new ApiError();
         apiError.setMessage(exception.getMessage());
